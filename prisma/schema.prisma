@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model voters {
+  studentId    String   @id @map("_id")
+  studentsName String
+  email        String
+  telephone    String?
+  password     String
+  del_flg      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  voting       voting[]
+}
+
+model positions {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  positionName String
+  description  String?
+  del_flg      Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  candidates   candidates[]
+  voting       voting[]
+}
+
+model candidates {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  candidateName String
+  telephone     String?
+  profile       String?
+  positions     positions? @relation(fields: [positionsId], references: [id])
+  positionsId   String?    @db.ObjectId
+  del_flag      Boolean    @default(false)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  voting        voting[]
+}
+
+model voting {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  positions    positions?  @relation(fields: [positionsId], references: [id])
+  positionsId  String?     @db.ObjectId
+  candidates   candidates? @relation(fields: [candidatesId], references: [id])
+  candidatesId String?     @db.ObjectId
+  voters       voters?     @relation(fields: [votersId], references: [studentId])
+  votersId     String?
+}
