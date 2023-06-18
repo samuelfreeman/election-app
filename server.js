@@ -1,5 +1,5 @@
 const express = require('express');
-const appRoutes = require('./routes')
+const appRoutes = require('./routes/index')
 const app = express();
 const PORT =process.env.PORT || 8080;
 
