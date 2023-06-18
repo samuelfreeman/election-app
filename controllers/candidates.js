@@ -5,12 +5,16 @@ const prisma = new PrismaClient();
 const createCandidateFunc = async (req, res, next) => {
   try {
     const data = req.body;
+    console.log(data);
     const candidates = await prisma.candidates.create({
       data,
     });
+    
+
     res.status(201).json({
       candidates,
     });
+   
   } catch (error) {
     console.log(error);
   }

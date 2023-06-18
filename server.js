@@ -1,8 +1,10 @@
 const express = require('express');
-const appRoutes = require('./routes/index')
+const appRoutes = require('./routes/index');
+// const { urlencoded } = require('body-parser');
 const app = express();
+app.use(express.json())
 const PORT =process.env.PORT || 8080;
-
+// app.use(express.urlencoded({extended:true}));
 app.use('/api',appRoutes)
 
 
