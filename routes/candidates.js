@@ -5,8 +5,8 @@ const candidateRouter = Router();
 const candidate = require("../controllers/candidates");
 
 candidateRouter.post("/", candidate.createCandidateFunc);
-candidateRouter.get("/:positionId", candidate.getCandidateByPositionId);
 candidateRouter.get("/:id", candidate.getSingleCandidateFunc);
-candidateRouter.delete("/", candidate.removeCandidateById);
-candidateRouter.patch("/", candidate.updateCandidate);
+candidateRouter.get("/:positionId", candidate.getCandidateByPositionId);
+candidateRouter.delete("/:id", candidate.removeCandidateById);
+candidateRouter.patch("/:id", candidate.updateCandidate);
 module.exports = candidateRouter;

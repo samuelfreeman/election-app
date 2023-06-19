@@ -21,15 +21,16 @@ const createCandidateFunc = async (req, res, next) => {
 };
 
 const getSingleCandidateFunc = async (req, res, next) => {
+  const id = req.params.id;
   try {
-    const id = req.params.id;
-    const candidates = await prisma.candidates.findUnique({
+    const candidate = await prisma.candidates.findUnique({
       where: {
         id,
       },
+    
     });
     res.status(200).json({
-      candidates,
+      candidate,
     });
   } catch (error) {
     console.log(error);
@@ -54,11 +55,11 @@ const updateCandidate = async (req, res, next) => {
   }
 };
 const getCandidateByPositionId = async (req, res, next) => {
-  const positionId = req.params.positionId;
+  const positionsId = req.params.positionsId;
   try {
     const candidate = await prisma.candidates.findUnique({
       where: {
-        positionId,
+        positionsId,
       },
     });
     res.status(200).json(candidate);
@@ -69,15 +70,15 @@ const getCandidateByPositionId = async (req, res, next) => {
 
 const removeCandidateById = async (req, res, next) => {
   const id = req.params.id;
+  
   try {
     const candidate = await prisma.candidates.delete({
       where: {
         id,
       },
+  
     });
-    res
-      .status(404)
-      .json(candidate, { message: "this candidate has been deleted" });
+    res.status(200).send("Candidate has been deleted")
   } catch (error) {
     console.log(error);
   }
