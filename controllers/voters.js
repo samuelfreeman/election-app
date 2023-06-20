@@ -18,7 +18,6 @@ const createVoter = async (req, res, next) => {
 
 const getAllVoters = async (req, res, next) => {
   try {
-    
     const voters = await prisma.voters.findMany({
       
     });
@@ -30,21 +29,22 @@ const getAllVoters = async (req, res, next) => {
   }
 };
 
+
 const getVotersById = async (req, res, next) => {
   try {
     const studentId = req.params.studentId;
-    const voters = await prisma.voters.findUnique({
+    const voter = await prisma.voters.findFirst({
       where: {
-        studentId,
-      },
+        studentId: studentId
+      }
     });
-    res.status(200).json({
-      voters,
-    });
+    res.json(voter);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
+
+
 const updateVoter = async (res, req, next) => {
   try {
     const studentId = req.params.studentId;
