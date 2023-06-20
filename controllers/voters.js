@@ -18,9 +18,9 @@ const createVoter = async (req, res, next) => {
 
 const getAllVoters = async (req, res, next) => {
   try {
-    const data = req.body;
+    
     const voters = await prisma.voters.findMany({
-      data,
+      
     });
     res.status(201).json({
       voters,
