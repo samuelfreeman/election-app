@@ -11,7 +11,7 @@ datasource db {
 }
 
 model voters {
-  studentId    String   @id @map("_id") @unique
+  studentId    String   @id @map("_id") 
   studentsName String
   email        String
   telephone    String?
