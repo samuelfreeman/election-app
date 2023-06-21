@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "generate":"npx prisma generate",
-     "dev":"nodemon server.js"
+    "generate": "npx prisma generate",
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
   "dependencies": {
     "@prisma/client": "^4.15.0",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "nodemon": "^2.0.22"
   }
