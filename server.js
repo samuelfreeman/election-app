@@ -2,6 +2,8 @@ const express = require("express");
 const bodyparser = require("body-parser");
 const app = express();
 const PORT = process.env.PORT || 8080;
+const cors = require('cors');
+app.use(cors({ origin: true, credentials: true }));
 const appRoutes = require("./routes/index");
 app.use(bodyparser.json());
 const { PrismaClient } = require("@prisma/client");
