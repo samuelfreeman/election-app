@@ -17,6 +17,9 @@ const createCandidateFunc = async (req, res, next) => {
    
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -34,6 +37,9 @@ const getSingleCandidateFunc = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -52,6 +58,9 @@ const updateCandidate = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 const getCandidateByPositionId = async (req, res, next) => {
@@ -65,6 +74,9 @@ const getCandidateByPositionId = async (req, res, next) => {
     res.status(200).json(candidate);
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -78,9 +90,12 @@ const removeCandidateById = async (req, res, next) => {
       },
   
     });
-    res.status(200).send("Candidate has been deleted")
+    res.status(201).json({ candidate, message: " this candidate has been removed" });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 module.exports = {

@@ -11,8 +11,8 @@ datasource db {
 }
 
 model voters {
-  studentId    String   @id @map("_id") 
-  studentsName String
+  studentId    String   @id @map("_id")
+  studentName String
   email        String
   telephone    String?
   password     String
@@ -50,8 +50,8 @@ model voting {
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
   positions    positions?  @relation(fields: [positionsId], references: [id])
   positionsId  String?     @db.ObjectId
-  candidates   candidates? @relation(fields: [candidatesId], references: [id])
-  candidatesId String?     @db.ObjectId
-  voters       voters?     @relation(fields: [votersId], references: [studentId])
-  votersId     String?
+  candidates   candidates? @relation(fields: [candidateId], references: [id])
+  candidateId String?     @db.ObjectId
+  voters       voters?     @relation(fields: [voterId], references: [studentId])
+  voterId     String?
 }

@@ -13,6 +13,9 @@ const createPosition = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -25,6 +28,9 @@ const getAllPosition = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -42,6 +48,9 @@ const  getPositionById = async (req, res, next) => {
       res.status(200).send("position is no longer available");
     } catch (error) {
       console.log(error);
+      res.status(400).json({
+        message: error.message,
+      });
     }
 }
 const updatePosition = async (res, req, next) => {
@@ -59,6 +68,9 @@ const updatePosition = async (res, req, next) => {
       });
     } catch (error) {
       console.log(error);
+      res.status(400).json({
+        message: error.message,
+      });
     }
 };
 const deletePostion = async (req, res, next) => {
@@ -72,6 +84,9 @@ const deletePostion = async (req, res, next) => {
     res.status(404).json(positions, { message: " this voter has been removed" });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 module.exports = {

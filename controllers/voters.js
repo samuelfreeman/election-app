@@ -13,7 +13,11 @@ const createVoter = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
+
 };
 
 const getAllVoters = async (req, res, next) => {
@@ -26,6 +30,9 @@ const getAllVoters = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -40,7 +47,10 @@ const getVotersById = async (req, res, next) => {
     });
     res.json(voter);
   } catch (error) {
-    next(error);
+    console.log(error)
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 
@@ -60,6 +70,9 @@ const updateVoter = async (res, req, next) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 const deleteVoter = async (req, res, next) => {
@@ -73,6 +86,9 @@ const deleteVoter = async (req, res, next) => {
     res.status(404).json(voters, { message: " this voter has been removed" });
   } catch (error) {
     console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
   }
 };
 module.exports = {
