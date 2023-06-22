@@ -12,10 +12,10 @@ datasource db {
 
 model voters {
   studentId    String   @id @map("_id")
-  studentName String
-  email        String
+  studentName String?
+  email        String?
   telephone    String?
-  password     String
+  password     String?
   del_flg      Boolean  @default(false)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
