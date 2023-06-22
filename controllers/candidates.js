@@ -53,7 +53,7 @@ const updateCandidate = async (req, res, next) => {
       },
       data,
     });
-    res.status(201).json({
+    res.status(200).json({
       candidates,
     });
   } catch (error) {
@@ -90,7 +90,7 @@ const removeCandidateById = async (req, res, next) => {
       },
   
     });
-    res.status(201).json({ candidate, message: " this candidate has been removed" });
+    res.status(204).json({ candidate, message: " this candidate has been removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({

@@ -25,7 +25,7 @@ const getAllVoters = async (req, res, next) => {
     const voters = await prisma.voters.findMany({
       
     });
-    res.status(201).json({
+    res.status(200).json({
       voters,
     });
   } catch (error) {
@@ -45,7 +45,7 @@ const getVotersById = async (req, res, next) => {
         studentId: studentId
       }
     });
-    res.json(voter);
+    res.status(200).json(voter);
   } catch (error) {
     console.log(error)
     res.status(400).json({
@@ -65,7 +65,7 @@ const updateVoter = async (res, req, next) => {
       },
       data,
     });
-    res.status(201).json({
+    res.status(200).json({
       voters,
     });
   } catch (error) {
@@ -83,7 +83,7 @@ const deleteVoter = async (req, res, next) => {
         studentId,
       },
     });
-    res.status(404).json(voters, { message: " this voter has been removed" });
+    res.status(204).json(voters, { message: " this voter has been removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({

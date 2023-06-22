@@ -23,7 +23,7 @@ const getAllPosition = async (req, res, next) => {
   try {
     const positions = await prisma.positions.findMany({
     });
-    res.status(201).json({
+    res.status(200).json({
         positions,
     });
   } catch (error) {
@@ -63,7 +63,7 @@ const updatePosition = async (res, req, next) => {
         },
         data,
       });
-      res.status(201).json({
+      res.status(200).json({
         positions,
       });
     } catch (error) {
@@ -81,7 +81,7 @@ const deletePostion = async (req, res, next) => {
         id,
       },
     });
-    res.status(404).json(positions, { message: " this voter has been removed" });
+    res.status(204).json(positions, { message: " this voter has been removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({

@@ -4,6 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const appRoutes = require("./routes/index");
 app.use(bodyparser.json());
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 app.use("/api", appRoutes);
 
 app.get("/", (req, res, next) => {
