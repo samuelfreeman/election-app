@@ -78,19 +78,30 @@ const updateVoter = async (res, req, next) => {
 const deleteVoter = async (req, res, next) => {
   const studentId = req.params.studentId;
   try {
-    const voters = await prisma.voters.delete({
+    const deletedVoter = await prisma.voters.delete({
       where: {
         studentId,
       },
     });
-    res.status(204).json(voters, { message: " this voter has been removed" });
+    if (deletedVoter) {
+      // Voter successfully deleted
+      res.status(200).json({
+        message: 'Voter deleted successfully',
+      });
+    } else {
+      // Voter not found
+      res.status(404).json({
+        message: 'Voter not found',
+      });
+    }
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
+    res.status(500).json({
+      message: 'An error occurred',
     });
   }
 };
+
 module.exports = {
   getAllVoters,
   getVotersById,
