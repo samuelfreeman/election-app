@@ -7,9 +7,11 @@ const candidate = require("../controllers/candidates");
 
 candidateRouter.post("/", candidate.createCandidateFunc);
 candidateRouter.get("/:id", candidate.getSingleCandidateFunc);
+candidateRouter.get("/",candidate.getAllCandidates);
 candidateRouter.get("/:positionId", candidate.getCandidateByPositionId);
 candidateRouter.delete("/:id", candidate.removeCandidateById);
 candidateRouter.patch("/:id", candidate.updateCandidate);
+
 
 module.exports = candidateRouter;
 

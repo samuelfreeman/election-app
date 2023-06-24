@@ -63,6 +63,30 @@ const updateCandidate = async (req, res, next) => {
     });
   }
 };
+
+const getAllCandidates = async (req,res,next) =>{
+  try {
+  const candidates  = await prisma.candidates.findMany({
+  
+  
+  })
+  
+  res.status(200).json({
+  
+  
+  candidates
+  
+  })
+} catch (error) {
+  console.log(error);
+    res.status(400).json({
+      message: error.message, 
+})
+
+
+
+}
+}
 const getCandidateByPositionId = async (req, res, next) => {
   const positionsId = req.params.positionsId;
   try {
@@ -104,4 +128,5 @@ module.exports = {
   updateCandidate,
   getCandidateByPositionId,
   removeCandidateById,
+  getAllCandidates
 };
