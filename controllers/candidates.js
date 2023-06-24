@@ -24,11 +24,11 @@ const createCandidateFunc = async (req, res, next) => {
 };
 
 const getSingleCandidateFunc = async (req, res, next) => {
-  const id = req.params.id;
+  const candidateId = req.params.candidateId;
   try {
     const candidate = await prisma.candidates.findUnique({
       where: {
-        id,
+        candidateId,
       },
     
     });

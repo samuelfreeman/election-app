@@ -9,7 +9,7 @@ candidateRouter.post("/", candidate.createCandidateFunc);
 candidateRouter.get("/:id", candidate.getSingleCandidateFunc);
 candidateRouter.get("/",candidate.getAllCandidates);
 candidateRouter.get("/:positionId", candidate.getCandidateByPositionId);
-candidateRouter.delete("/:id", candidate.removeCandidateById);
+candidateRouter.delete("/:candidateId", candidate.removeCandidateById);
 candidateRouter.patch("/:id", candidate.updateCandidate);
 
 
