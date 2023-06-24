@@ -84,12 +84,10 @@ const deleteVoter = async (req, res, next) => {
       },
     });
     if (deletedVoter) {
-      // Voter successfully deleted
       res.status(200).json({
         message: 'Voter deleted successfully',
       });
     } else {
-      // Voter not found
       res.status(404).json({
         message: 'Voter not found',
       });
