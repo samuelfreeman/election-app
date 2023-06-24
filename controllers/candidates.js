@@ -45,11 +45,11 @@ const getSingleCandidateFunc = async (req, res, next) => {
 
 const updateCandidate = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const candidateId = req.params.candidateId;
     const data = req.body;
     const candidates = await prisma.candidates.update({
       where: {
-        id,
+        candidateId,
       },
       data,
     });
@@ -105,12 +105,12 @@ const getCandidateByPositionId = async (req, res, next) => {
 };
 
 const removeCandidateById = async (req, res, next) => {
-  const id = req.params.id;
+  const candidateId = req.params.candidateId
   
   try {
     const candidate = await prisma.candidates.delete({
       where: {
-        id,
+        candidateId,
       },
   
     });
