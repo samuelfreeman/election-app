@@ -38,6 +38,7 @@ model candidates {
   candidateName String
   telephone     String?
   profile       String?
+  position      String?
   positions     positions? @relation(fields: [positionsId], references: [id])
   positionsId   String?   @db.ObjectId
   del_flag      Boolean    @default(false)
