@@ -9,12 +9,10 @@ const createCandidateFunc = async (req, res, next) => {
     const candidates = await prisma.candidates.create({
       data,
     });
-    
 
     res.status(201).json({
       candidates,
     });
-   
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -30,7 +28,6 @@ const getSingleCandidateFunc = async (req, res, next) => {
       where: {
         candidateId,
       },
-    
     });
     res.status(200).json({
       candidate,
@@ -64,29 +61,28 @@ const updateCandidate = async (req, res, next) => {
   }
 };
 
-const getAllCandidates = async (req,res,next) =>{
+const getAllCandidates = async (req, res, next) => {
   try {
-  const candidates  = await prisma.candidates.findMany({
-  
-  
-  })
-  
-  res.status(200).json({
-  
-  
-  candidates
-  
-  })
-} catch (error) {
-  console.log(error);
+    const candidates = await prisma.candidates.findMany({
+      include: {
+        positions: {
+          select: {
+            positionName: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json({
+      candidates,
+    });
+  } catch (error) {
+    console.log(error);
     res.status(400).json({
-      message: error.message, 
-})
-
-
-
-}
-}
+      message: error.message,
+    });
+  }
+};
 const getCandidateByPositionId = async (req, res, next) => {
   const positionsId = req.params.positionsId;
   try {
@@ -105,16 +101,17 @@ const getCandidateByPositionId = async (req, res, next) => {
 };
 
 const removeCandidateById = async (req, res, next) => {
-  const candidateId = req.params.candidateId
-  
+  const candidateId = req.params.candidateId;
+
   try {
     const candidate = await prisma.candidates.delete({
       where: {
         candidateId,
       },
-  
     });
-    res.status(204).json({ candidate, message: " this candidate has been removed" });
+    res
+      .status(204)
+      .json({ candidate, message: " this candidate has been removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -128,5 +125,5 @@ module.exports = {
   updateCandidate,
   getCandidateByPositionId,
   removeCandidateById,
-  getAllCandidates
+  getAllCandidates,
 };

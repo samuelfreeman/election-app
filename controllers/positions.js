@@ -22,6 +22,9 @@ const createPosition = async (req, res, next) => {
 const getAllPosition = async (req, res, next) => {
   try {
     const positions = await prisma.positions.findMany({
+      include:{
+        candidates:true
+      }
     });
     res.status(200).json({
         positions,
@@ -35,9 +38,7 @@ const getAllPosition = async (req, res, next) => {
 };
 
 const  getPositionById = async (req, res, next) => {
-  
     const id = req.params.id;
-  
     try {
       const position = await prisma.positions.delete({
         where: {
