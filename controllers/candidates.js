@@ -1,9 +1,26 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const cloudinaryModule = require('cloudinary');
+const cloudinary = cloudinaryModule.v2;
+
+
+
+
+
 const createCandidateFunc = async (req, res, next) => {
   try {
     const data = req.body;
     console.log(data);
+    const photo = req.file ? req.file.path : undefined;
+
+        if (photo) {
+            const uploaded = await cloudinary.uploader.upload(photo, {
+                folder: 'election/candidates'
+            });
+            if (uploaded) {
+                data.profile = uploaded.secure_url;
+            }
+        }
     const candidates = await prisma.candidates.create({
       data,
     });
