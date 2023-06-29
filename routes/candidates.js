@@ -6,11 +6,11 @@ const candidateRouter = Router();
 const candidate = require("../controllers/candidates");
 
 candidateRouter.post("/", candidate.createCandidateFunc);
-candidateRouter.get("/:id", candidate.getSingleCandidateFunc);
+candidateRouter.get("/:candidateId", candidate.getSingleCandidateFunc);
 candidateRouter.get("/",candidate.getAllCandidates);
 candidateRouter.get("/:positionId", candidate.getCandidateByPositionId);
 candidateRouter.delete("/:candidateId", candidate.removeCandidateById);
-candidateRouter.patch("/:id", candidate.updateCandidate);
+candidateRouter.patch("/::candidateId", candidate.updateCandidate);
 
 
 module.exports = candidateRouter;
