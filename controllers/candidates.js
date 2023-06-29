@@ -30,8 +30,9 @@ const getSingleCandidateFunc = async (req, res, next) => {
     res.status(200).json({
       candidate,
     });
-    if (!candidate) {
-      return res.status(404).json({ error: "candidate not found!" });
+    
+    if (candidate == null) {
+     res.status(404).json({ error: "candidate not found!" });
     }
   } catch (error) {
     console.log(error);
