@@ -3,8 +3,8 @@
 const { Router } = require("express");
 const votersRouter = Router();
 const voters = require("../controllers/voters");
-
-votersRouter.post("/", voters.createVoter);
+const validation = require("../validation/voters")
+votersRouter.post("/",validation.checkUserExists, voters.createVoter);
 votersRouter.get("/", voters.getAllVoters);
 votersRouter.get("/:studentId", voters.getVotersById);
 votersRouter.delete("/:studentId", voters.deleteVoter);

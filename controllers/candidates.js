@@ -20,20 +20,19 @@ const createCandidateFunc = async (req, res, next) => {
 };
 
 const getSingleCandidateFunc = async (req, res, next) => {
-  const candidateId = req.params.candidateId;
+  const id = req.params.id;
   try {
     const candidate = await prisma.candidates.findUnique({
       where: {
-        candidateId,
+        id,
       },
     });
+    
     res.status(200).json({
       candidate,
     });
     
-    if (candidate == null) {
-     res.status(404).json({ error: "candidate not found!" });
-    }
+    
     console.log("candidate not found!")
   } catch (error) {
     console.log(error);
@@ -45,11 +44,11 @@ const getSingleCandidateFunc = async (req, res, next) => {
 
 const updateCandidate = async (req, res, next) => {
   try {
-    const candidateId = req.params.candidateId;
+    const id = req.params.id;
     const data = req.body;
     const candidates = await prisma.candidates.update({
       where: {
-        candidateId,
+        id,
       },
       data,
     });
@@ -95,11 +94,11 @@ const getCandidateByPositionId = async (req, res, next) => {
 };
 
 const removeCandidateById = async (req, res, next) => {
-  const candidateId = req.params.candidateId;
+  const id = req.params.id;
   try {
     const candidate = await prisma.candidates.delete({
       where: {
-        candidateId,
+        id,
       },
     });
     res
