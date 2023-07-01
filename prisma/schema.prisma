@@ -48,8 +48,8 @@ model candidates {
 
 model voting {
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  positions    positions?  @relation(fields: [positionsId], references: [id])
-  positionsId  String?     @db.ObjectId
+  positions    positions?  @relation(fields: [positionId], references: [id])
+  positionId  String?     @db.ObjectId
   candidates   candidates? @relation(fields: [candidateId], references: [id])
   candidateId String?       @db.ObjectId
   voters       voters?     @relation(fields: [voterId], references: [studentId])

@@ -27,7 +27,7 @@ const createCandidateFunc = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
+    res.status(422).json({
       message: error.message,
     });
   }
