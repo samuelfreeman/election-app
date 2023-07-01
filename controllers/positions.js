@@ -9,7 +9,7 @@ const createPosition = async (req, res, next) => {
       data,
     });
     res.status(201).json({
-        positions,
+      positions,
     });
   } catch (error) {
     console.log(error);
@@ -22,12 +22,12 @@ const createPosition = async (req, res, next) => {
 const getAllPosition = async (req, res, next) => {
   try {
     const positions = await prisma.positions.findMany({
-      include:{
-        candidates:true
-      }
+      include: {
+        candidates: true,
+      },
     });
     res.status(200).json({
-        positions,
+      positions,
     });
   } catch (error) {
     console.log(error);
@@ -37,52 +37,53 @@ const getAllPosition = async (req, res, next) => {
   }
 };
 
-const  getPositionById = async (req, res, next) => {
-    const id = req.params.id;
-    try {
-      const position = await prisma.positions.delete({
-        where: {
-          id,
-        },
-    
-      });
-      res.status(200).send("position is no longer available");
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        message: error.message,
-      });
-    }
-}
+const getPositionById = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const position = await prisma.positions.delete({
+      where: {
+        id,
+      },
+    });
+    res.status(200).send("position is no longer available");
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 const updatePosition = async (res, req, next) => {
   const id = req.params.id;
-    try {
-      const data = req.body;
-      const positions = await prisma.positions.update({
-        where: {
-          id,
-        },
-        data,
-      });
-      res.status(200).json({
-        positions,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({
-        message: error.message,
-      });
-    }
+  try {
+    const data = req.body;
+    const positions = await prisma.positions.update({
+      where: {
+        id,
+      },
+      data,
+    });
+    res.status(200).json({
+      positions,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
 };
 const deletePostion = async (req, res, next) => {
   const id = req.params.id;
-  try{
+  try {
     const positions = await prisma.positions.delete({
       where: {
         id,
       },
     });
-    res.status(204).json(positions, { message: " this voter has been removed" });
+    res
+      .status(204)
+      .json(positions, { message: " this voter has been removed" });
   } catch (error) {
     console.log(error);
     res.status(400).json({

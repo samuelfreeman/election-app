@@ -1,8 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const cloudinary = require("../utils/cloudinary")
-
-
+const cloudinary = require("../utils/cloudinary");
 
 const createCandidateFunc = async (req, res, next) => {
   try {
@@ -10,14 +8,14 @@ const createCandidateFunc = async (req, res, next) => {
     console.log(data);
     const photo = req.file ? req.file.path : undefined;
 
-        if (photo) {
-            const uploaded = await cloudinary.uploader.upload(photo, {
-                folder: 'election/candidates'
-            });
-            if (uploaded) {
-                data.profile = uploaded.secure_url;
-            }
-        }
+    if (photo) {
+      const uploaded = await cloudinary.uploader.upload(photo, {
+        folder: "election/candidates",
+      });
+      if (uploaded) {
+        data.profile = uploaded.secure_url;
+      }
+    }
     const candidates = await prisma.candidates.create({
       data,
     });
@@ -41,13 +39,12 @@ const getSingleCandidateFunc = async (req, res, next) => {
         id,
       },
     });
-    
+
     res.status(200).json({
       candidate,
     });
-    
-    
-    console.log("candidate not found!")
+
+    console.log("candidate not found!");
   } catch (error) {
     console.log(error);
     res.status(400).json({

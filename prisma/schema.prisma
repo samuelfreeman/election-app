@@ -11,15 +11,15 @@ datasource db {
 }
 
 model voters {
-  studentId    String   @id @map("_id")
+  studentId   String   @id @map("_id")
   studentName String?
-  email        String?
-  telephone    String?
-  password     String?
-  del_flg      Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  voting       voting[]
+  email       String?
+  telephone   String?
+  password    String?
+  del_flg     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  voting      voting[]
 }
 
 model positions {
@@ -34,12 +34,12 @@ model positions {
 }
 
 model candidates {
-  id     String    @id @default(auto()) @map("_id") @db.ObjectId 
-  candidateName String @unique
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  candidateName String     @unique
   telephone     String?
   profile       String?
   positions     positions? @relation(fields: [positionId], references: [id])
-  positionId   String?   @db.ObjectId  @unique
+  positionId    String?    @unique @db.ObjectId
   del_flag      Boolean    @default(false)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -47,11 +47,11 @@ model candidates {
 }
 
 model voting {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  positions    positions?  @relation(fields: [positionId], references: [id])
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  positions   positions?  @relation(fields: [positionId], references: [id])
   positionId  String?     @db.ObjectId
-  candidates   candidates? @relation(fields: [candidateId], references: [id])
-  candidateId String?       @db.ObjectId
-  voters       voters?     @relation(fields: [voterId], references: [studentId])
+  candidates  candidates? @relation(fields: [candidateId], references: [id])
+  candidateId String?     @db.ObjectId
+  voters      voters?     @relation(fields: [voterId], references: [studentId])
   voterId     String?
 }

@@ -1,4 +1,3 @@
-
 const { Router } = require("express");
 const votersRouter = Router();
 const voters = require("../controllers/voters");

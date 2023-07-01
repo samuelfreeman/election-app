@@ -18,7 +18,21 @@ const addVoting = async (req, res, next) => {
     });
   }
 };
+const getVotes = async (req, res, next) => {
+  try {
+    const votes = await prisma.voting.findMany({});
+    res.status(200).json({
+      votes,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   addVoting,
+  getVotes,
 };

@@ -17,14 +17,11 @@ const createVoter = async (req, res, next) => {
       message: error.message,
     });
   }
-
 };
 
 const getAllVoters = async (req, res, next) => {
   try {
-    const voters = await prisma.voters.findMany({
-      
-    });
+    const voters = await prisma.voters.findMany({});
     res.status(200).json({
       voters,
     });
@@ -36,24 +33,22 @@ const getAllVoters = async (req, res, next) => {
   }
 };
 
-
 const getVotersById = async (req, res, next) => {
   try {
     const studentId = req.params.studentId;
     const voter = await prisma.voters.findFirst({
       where: {
-        studentId: studentId
-      }
+        studentId: studentId,
+      },
     });
     res.status(200).json(voter);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({
       message: error.message,
     });
   }
 };
-
 
 const updateVoter = async (res, req, next) => {
   try {
@@ -85,17 +80,17 @@ const deleteVoter = async (req, res, next) => {
     });
     if (deletedVoter) {
       res.status(200).json({
-        message: 'Voter deleted successfully',
+        message: "Voter deleted successfully",
       });
     } else {
       res.status(404).json({
-        message: 'Voter not found',
+        message: "Voter not found",
       });
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: 'An error occurred',
+      message: "An error occurred",
     });
   }
 };
