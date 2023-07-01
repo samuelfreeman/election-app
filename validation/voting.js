@@ -6,16 +6,22 @@ const prisma = new PrismaClient();
 
 const checkVoteExists = async(req,res,next)=>{
     const voterId = req.body.voterId;
-const voter = await prisma.voters.findUnique({
+    const candidateId = req.body.candidateId
+    const  positionId = req.body.positionId
+const voter = await prisma.voting.findFirst({
     where: {
-        voterId,
+        voterId ,
+        candidateId,
+        positionId
+
       }
 })
+
 
 if (voter) {
      return res.status(422).json(
         { 
-            message: "voter already exists"
+            message: "vote already exists"
         }
         );
     }

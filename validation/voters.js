@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 const checkUserExists = async(req,res,next)=>{
     const studentId = req.body.studentId;
-const voter = await prisma.voters.findUnique({
+const voter = await prisma.voters.findFirst({
     where: {
         studentId,
       }
