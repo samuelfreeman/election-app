@@ -14,6 +14,7 @@ const createCandidateFunc = async (req, res, next) => {
       });
       if (uploaded) {
         data.profile = uploaded.secure_url;
+      
       }
     }
     const candidates = await prisma.candidates.create({

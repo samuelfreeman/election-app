@@ -13,7 +13,6 @@ const checkVoteExists = async (req, res, next) => {
       positionId,
     },
   });
-
   if (voter) {
     return res.status(422).json({
       message: "vote already exists",
