@@ -7,6 +7,7 @@ const candidate = require("../controllers/candidates");
 const validation =require("../validation/candidate");
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
+
 candidateRouter.post("/",upload.single('profile'),validation.checkCandidateExists,  candidate.createCandidateFunc);
 candidateRouter.get("/:id", candidate.getSingleCandidateFunc);
 candidateRouter.get("/",candidate.getAllCandidates);

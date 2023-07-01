@@ -38,8 +38,8 @@ model candidates {
   candidateName String @unique
   telephone     String?
   profile       String?
-  positions     positions? @relation(fields: [positionsId], references: [id])
-  positionsId   String?   @db.ObjectId  @unique
+  positions     positions? @relation(fields: [positionId], references: [id])
+  positionId   String?   @db.ObjectId  @unique
   del_flag      Boolean    @default(false)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
