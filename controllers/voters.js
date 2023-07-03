@@ -1,7 +1,37 @@
+// importing routes and dependencies
 const { PrismaClient } = require("@prisma/client");
-
+const { signToken } = require("../utils/token");
 const prisma = new PrismaClient();
-
+// function for voter login
+const login = async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const voters = await prisma.voters.findFirst({
+      where: {
+        email,
+        password,
+      },
+    });
+    console.log(voters);
+    if (!voters) {
+      return res.status(422).json({
+        message: "Invalid Password",
+      });
+    } else {
+      const token = signToken(voters.studentId);
+      res.status(200).json({
+        token,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+//function for saving a voter
 const createVoter = async (req, res, next) => {
   try {
     const data = req.body;
@@ -18,7 +48,7 @@ const createVoter = async (req, res, next) => {
     });
   }
 };
-
+//loading all voters
 const getAllVoters = async (req, res, next) => {
   try {
     const voters = await prisma.voters.findMany({});
@@ -32,7 +62,7 @@ const getAllVoters = async (req, res, next) => {
     });
   }
 };
-
+//loading a voter by its id
 const getVotersById = async (req, res, next) => {
   try {
     const studentId = req.params.studentId;
@@ -49,7 +79,7 @@ const getVotersById = async (req, res, next) => {
     });
   }
 };
-
+//editing a voter
 const updateVoter = async (res, req, next) => {
   try {
     const studentId = req.params.studentId;
@@ -60,7 +90,7 @@ const updateVoter = async (res, req, next) => {
       },
       data,
     });
-    res.status(200).json({
+    res.status(201).json({
       voters,
     });
   } catch (error) {
@@ -70,6 +100,7 @@ const updateVoter = async (res, req, next) => {
     });
   }
 };
+//deleting a voter
 const deleteVoter = async (req, res, next) => {
   const studentId = req.params.studentId;
   try {
@@ -79,7 +110,7 @@ const deleteVoter = async (req, res, next) => {
       },
     });
     if (deletedVoter) {
-      res.status(200).json({
+      res.status(201).json({
         message: "Voter deleted successfully",
       });
     } else {
@@ -94,11 +125,12 @@ const deleteVoter = async (req, res, next) => {
     });
   }
 };
-
+//exporting all functions
 module.exports = {
   getAllVoters,
   getVotersById,
   createVoter,
   updateVoter,
   deleteVoter,
+  login,
 };

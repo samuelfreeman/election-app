@@ -1,7 +1,7 @@
+//importing all dependencies
 const { PrismaClient } = require("@prisma/client");
-
 const prisma = new PrismaClient();
-
+// saving a position
 const createPosition = async (req, res, next) => {
   try {
     const data = req.body;
@@ -18,7 +18,7 @@ const createPosition = async (req, res, next) => {
     });
   }
 };
-
+//loading all position
 const getAllPosition = async (req, res, next) => {
   try {
     const positions = await prisma.positions.findMany({
@@ -36,16 +36,17 @@ const getAllPosition = async (req, res, next) => {
     });
   }
 };
-
+//loading position by its id
 const getPositionById = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const position = await prisma.positions.delete({
+    const position = await prisma.positions.findUnique({
       where: {
         id,
       },
+  
     });
-    res.status(200).send("position is no longer available");
+    res.status(200).send(position);
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -53,6 +54,7 @@ const getPositionById = async (req, res, next) => {
     });
   }
 };
+//editing a postion
 const updatePosition = async (res, req, next) => {
   const id = req.params.id;
   try {
@@ -73,6 +75,7 @@ const updatePosition = async (res, req, next) => {
     });
   }
 };
+//deleting a position 
 const deletePostion = async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -83,7 +86,7 @@ const deletePostion = async (req, res, next) => {
     });
     res
       .status(204)
-      .json(positions, { message: " this voter has been removed" });
+      .json(positions, { message: " position is no longer available" });
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -91,6 +94,7 @@ const deletePostion = async (req, res, next) => {
     });
   }
 };
+//exposting all functions
 module.exports = {
   getAllPosition,
   getPositionById,

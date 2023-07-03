@@ -1,8 +1,9 @@
+//
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const cloudinary = require("../utils/cloudinary");
-
-const createCandidateFunc = async (req, res, next) => {
+//saving a candidate
+const saveCandidate = async (req, res, next) => {
   try {
     const data = req.body;
     console.log(data);
@@ -31,7 +32,7 @@ const createCandidateFunc = async (req, res, next) => {
     });
   }
 };
-
+//loading a single candidate
 const getSingleCandidateFunc = async (req, res, next) => {
   const id = req.params.id;
   try {
@@ -45,7 +46,6 @@ const getSingleCandidateFunc = async (req, res, next) => {
       candidate,
     });
 
-    console.log("candidate not found!");
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -53,7 +53,7 @@ const getSingleCandidateFunc = async (req, res, next) => {
     });
   }
 };
-
+//updating a candidate
 const updateCandidate = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -74,7 +74,7 @@ const updateCandidate = async (req, res, next) => {
     });
   }
 };
-
+//loading all candidates
 const getAllCandidates = async (req, res, next) => {
   try {
     const candidates = await prisma.candidates.findMany({});
@@ -88,30 +88,36 @@ const getAllCandidates = async (req, res, next) => {
     });
   }
 };
+// loading a candidate by its position id
 const getCandidateByPositionId = async (req, res, next) => {
-  const positionsId = req.params.positionsId;
+ 
   try {
-    const candidate = await prisma.candidates.findUnique({
+   const positionId = req.params.positionId;
+    const candidate = await prisma.candidates.findMany({
       where: {
-        positionsId,
+        positionId,
       },
     });
-    res.status(200).json(candidate);
+    res.status(200).json({
+      candidate,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({
       message: error.message,
     });
   }
+  
 };
 
+//deleting a candidate
 const removeCandidateById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const candidate = await prisma.candidates.delete({
       where: {
         id,
-      },
+      }
     });
     res
       .status(204)
@@ -123,11 +129,13 @@ const removeCandidateById = async (req, res, next) => {
     });
   }
 };
+//exporting the functions
 module.exports = {
-  createCandidateFunc,
+  saveCandidate,
   getSingleCandidateFunc,
   updateCandidate,
   getCandidateByPositionId,
   removeCandidateById,
   getAllCandidates,
+
 };

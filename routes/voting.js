@@ -4,8 +4,11 @@ const votingRouter = Router();
 //importing controller
 const votes = require("../controllers/voting");
 const validation = require("../validation/voting");
+const candidate = require("../controllers/candidates");
+const verification = require("../verification/verifytoken");
 // implementing https methods
-votingRouter.post("/", validation.checkVoteExists, votes.addVoting);
-votingRouter.get("/", votes.getVotes);
+votingRouter.get("/candidates/:positionId",candidate.getCandidateByPositionId);//load all candidates
+votingRouter.post("/",verification.verifyToken,validation.checkVoteExists, votes.addVoting);//save a vote
+votingRouter.get("/",verification.verifyToken,votes.getVotes);//load all votes
 //exporting voting router
 module.exports = votingRouter;

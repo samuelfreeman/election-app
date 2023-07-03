@@ -1,6 +1,7 @@
+//importing all dependencies
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
+//saving a voter
 const addVoting = async (req, res, next) => {
   try {
     const data = req.body;
@@ -18,6 +19,7 @@ const addVoting = async (req, res, next) => {
     });
   }
 };
+// loading all votes
 const getVotes = async (req, res, next) => {
   try {
     const votes = await prisma.voting.findMany({});
@@ -32,6 +34,7 @@ const getVotes = async (req, res, next) => {
   }
 };
 
+//exporting all functions
 module.exports = {
   addVoting,
   getVotes,
