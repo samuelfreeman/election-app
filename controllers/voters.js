@@ -80,8 +80,10 @@ const getVotersById = async (req, res, next) => {
   }
 };
 //editing a voter
-const updateVoter = async (res, req, next) => {
+const updateVoter = async (req, res, next) => {
   try {
+    console.log(req.params)
+    console.log("===================")
     const studentId = req.params.studentId;
     const data = req.body;
     const voters = await prisma.voters.update({
