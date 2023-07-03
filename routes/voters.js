@@ -14,6 +14,6 @@ votersRouter.get("/",verification.verifyToken, voters.getAllVoters);
 votersRouter.get("/candidates/",verification.verifyToken,candidate.getAllCandidates)
 votersRouter.get("/:studentId",verification.verifyToken, voters.getVotersById);
 votersRouter.delete("/:studentId",verification.verifyToken, voters.deleteVoter);
-votersRouter.patch("/:studentId",verification.verifyToken, voters.updateVoter);
+votersRouter.patch("/:studentId", voters.updateVoter);
 //exporting all routes
 module.exports = votersRouter;
