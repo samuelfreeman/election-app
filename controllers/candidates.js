@@ -70,7 +70,7 @@ const updateCandidate = async (req, res, next) => {
       candidates,
     });
   } catch (error) {
-    next(new HttpException(201, error.message));
+    next(new HttpException(400, error.message));
     // console.log(error);
     // res.status(400).json({
     //   message: error.message,
