@@ -1,6 +1,8 @@
 //importing all dependencies
 const { PrismaClient } = require("@prisma/client");
 const { signToken } = require("../utils/usertoken");
+const HttpException = require("../validation/http-exception");
+
 const prisma = new PrismaClient();
 //login functinion for admins/users
 const login = async (req, res, next) => {
@@ -129,9 +131,8 @@ const deleteUser = async (req, res, next) => {
     });
   } catch (error) {
     next(new HttpException(422, error.message));
-
+  }
 };
-}
 //exporting a functions
 module.exports = {
   login,

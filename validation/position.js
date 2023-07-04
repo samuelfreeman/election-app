@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
+const HttpException = require("../validation/http-exception")
 
 const checkpositionExists = async (req, res, next) => {
   const positionName = req.body.positionName;

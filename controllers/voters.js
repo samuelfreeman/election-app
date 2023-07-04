@@ -2,6 +2,8 @@
 const { PrismaClient } = require("@prisma/client");
 const { signToken } = require("../utils/token");
 const prisma = new PrismaClient();
+const HttpException = require("../validation/http-exception")
+
 // function for voter login
 const login = async (req, res, next) => {
   try {

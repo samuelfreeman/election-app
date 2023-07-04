@@ -1,6 +1,8 @@
 //importing all dependencies
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const HttpException = require("../validation/http-exception")
+
 // saving a position
 const createPosition = async (req, res, next) => {
   try {
@@ -49,9 +51,10 @@ const getPositionById = async (req, res, next) => {
   }
 };
 //editing a postion
-const updatePosition = async (res, req, next) => {
-  const id = req.params.id;
+const updatePosition = async (req,res, next) => {
+  
   try {
+    const id = req.params.id;
     const data = req.body;
     const positions = await prisma.positions.update({
       where: {

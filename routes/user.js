@@ -8,7 +8,7 @@ const user = require("../controllers/user");
 const validation = require("../validation/user");
 //Routes
 userRouter.get("/login/", authentication.userEmail, user.login);
-userRouter.get("/candidates",candidate.getAllCandidates);
+userRouter.get("/candidates/:positionId",candidate.getCandidateByPositionId);
 userRouter.post("/", validation.checkUserExists, user.saveUser);
 userRouter.get("/", user.getAllUsers);
 userRouter.get("/:id",  user.getSingleUser);

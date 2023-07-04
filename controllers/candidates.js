@@ -2,6 +2,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const cloudinary = require("../utils/cloudinary");
+const HttpException = require("../validation/http-exception");
+
 //saving a candidate
 const saveCandidate = async (req, res, next) => {
   try {
@@ -15,7 +17,6 @@ const saveCandidate = async (req, res, next) => {
       });
       if (uploaded) {
         data.profile = uploaded.secure_url;
-      
       }
     }
     const candidates = await prisma.candidates.create({
@@ -46,9 +47,8 @@ const getSingleCandidateFunc = async (req, res, next) => {
     res.status(200).json({
       candidate,
     });
-
   } catch (error) {
-    next(new HttpException(200, error.message));
+    next(new HttpException(400, error.message));
     // console.log(error);
     // res.status(400).json({
     //   message: error.message,
@@ -94,10 +94,9 @@ const getAllCandidates = async (req, res, next) => {
 };
 // loading a candidate by its position id
 const getCandidateByPositionId = async (req, res, next) => {
- 
   try {
-   const positionId = req.params.positionId;
-   console.log(req.params)
+    const positionId = req.params.positionId;
+    console.log(req.params);
     const candidate = await prisma.candidates.findFirst({
       where: {
         positionId,
@@ -108,11 +107,10 @@ const getCandidateByPositionId = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(400, error.message));
+
+    
   }
-  
 };
 
 //deleting a candidate
@@ -122,7 +120,7 @@ const removeCandidateById = async (req, res, next) => {
     const candidate = await prisma.candidates.delete({
       where: {
         id,
-      }
+      },
     });
     res
       .status(204)
@@ -143,5 +141,4 @@ module.exports = {
   getCandidateByPositionId,
   removeCandidateById,
   getAllCandidates,
-
 };
