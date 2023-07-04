@@ -14,9 +14,8 @@ const checkVoteExists = async (req, res, next) => {
     },
   });
   if (voter) {
-    return res.status(422).json({
-      message: "Individual has voted already",
-    });
+    return     next(new HttpException(422, "individual has voted already"));
+
   } else {
     next();
   }

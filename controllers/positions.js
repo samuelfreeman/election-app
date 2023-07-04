@@ -12,10 +12,8 @@ const createPosition = async (req, res, next) => {
       positions,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(401, error.message));
+
   }
 };
 //loading all position
@@ -30,10 +28,8 @@ const getAllPosition = async (req, res, next) => {
       positions,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
   }
 };
 //loading position by its id
@@ -48,10 +44,8 @@ const getPositionById = async (req, res, next) => {
     });
     res.status(200).send(position);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
   }
 };
 //editing a postion
@@ -69,10 +63,8 @@ const updatePosition = async (res, req, next) => {
       positions,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(400, error.message));
+
   }
 };
 //deleting a position 
@@ -88,10 +80,8 @@ const deletePostion = async (req, res, next) => {
       .status(204)
       .json(positions, { message: " position is no longer available" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(404, error.message));
+
   }
 };
 //exposting all functions

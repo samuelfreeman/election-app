@@ -28,9 +28,8 @@ const userEmail = async(req,res,next)=>{
   });
 
   if (!user) {
-    return res.status(422).json({
-      message: "Please sign up!",
-    });
+    return    next(new HttpException(422,"Please sign up!"));
+
   } else {
     next();
   }

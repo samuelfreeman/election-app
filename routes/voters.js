@@ -10,8 +10,7 @@ const candidate = require("../controllers/candidates");
 //Routes
 votersRouter.post("/", validation.checkUserExists, voters.createVoter);
 votersRouter.get("/login/",authentication.checkEmailExists,voters.login);
-votersRouter.get("/", voters.getAllVoters);
-votersRouter.get("/candidates/",candidate.getAllCandidates)
+votersRouter.get("/",voters.getAllVoters);
 votersRouter.get("/:studentId", voters.getVotersById);
 votersRouter.delete("/:studentId", voters.deleteVoter);
 votersRouter.patch("/:studentId", voters.updateVoter);

@@ -13,10 +13,11 @@ const addVoting = async (req, res, next) => {
       votes,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+    // console.log(error);
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 // loading all votes
@@ -28,9 +29,11 @@ const getVotes = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(400, error.message));
+
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 

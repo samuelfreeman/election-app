@@ -12,9 +12,8 @@ const checkCandidateExists = async (req, res, next) => {
   });
 
   if (candidate) {
-    return res.status(422).json({
-      message: "Candidate already exists",
-    });
+    return     next(new HttpException(422, "candidate already exists"));
+
   } else {
     next();
   }

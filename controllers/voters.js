@@ -26,9 +26,11 @@ const login = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //function for saving a voter
@@ -43,9 +45,10 @@ const createVoter = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading all voters
@@ -57,9 +60,11 @@ const getAllVoters = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading a voter by its id
@@ -74,9 +79,10 @@ const getVotersById = async (req, res, next) => {
     res.status(200).json(voter);
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //editing a voter
@@ -97,9 +103,10 @@ const updateVoter = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //deleting a voter
@@ -116,15 +123,19 @@ const deleteVoter = async (req, res, next) => {
         message: "Voter deleted successfully",
       });
     } else {
-      res.status(404).json({
-        message: "Voter not found",
-      });
+      next(new HttpException(404, "Voter not found"));
+
+      // res.status(404).json({
+      //   message: "Voter not found",
+      // });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      message: "An error occurred",
-    });
+    next(new HttpException(500,"an error occurred"));
+
+    // res.status(500).json({
+    //   message: "An error occurred",
+    // });
   }
 };
 //exporting all functions

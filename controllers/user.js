@@ -26,9 +26,11 @@ const login = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //saving  a user
@@ -43,9 +45,11 @@ const saveUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading all users
@@ -56,10 +60,12 @@ const getAllUsers = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(400, error.message));
+
+    // console.log(error);
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading a single user
@@ -76,10 +82,12 @@ const getSingleUser = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // console.log(error);
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //editing a user
@@ -98,10 +106,12 @@ const updateUser = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+
+    // console.log(error);
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //deleting a user
@@ -118,12 +128,10 @@ const deleteUser = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
-  }
+    next(new HttpException(422, error.message));
+
 };
+}
 //exporting a functions
 module.exports = {
   login,

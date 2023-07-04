@@ -26,10 +26,11 @@ const saveCandidate = async (req, res, next) => {
       candidates,
     });
   } catch (error) {
-    console.log(error);
-    res.status(422).json({
-      message: error.message,
-    });
+    next(new HttpException(201, error.message));
+    // console.log(error);
+    // res.status(422).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading a single candidate
@@ -47,10 +48,11 @@ const getSingleCandidateFunc = async (req, res, next) => {
     });
 
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(200, error.message));
+    // console.log(error);
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //updating a candidate
@@ -64,14 +66,15 @@ const updateCandidate = async (req, res, next) => {
       },
       data,
     });
-    res.status(200).json({
+    res.status(201).json({
       candidates,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(201, error.message));
+    // console.log(error);
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //loading all candidates
@@ -82,10 +85,11 @@ const getAllCandidates = async (req, res, next) => {
       candidates,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(400, error.message));
+    // console.log(error);
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 // loading a candidate by its position id
@@ -93,7 +97,8 @@ const getCandidateByPositionId = async (req, res, next) => {
  
   try {
    const positionId = req.params.positionId;
-    const candidate = await prisma.candidates.findMany({
+   console.log(req.params)
+    const candidate = await prisma.candidates.findFirst({
       where: {
         positionId,
       },
@@ -123,10 +128,11 @@ const removeCandidateById = async (req, res, next) => {
       .status(204)
       .json({ candidate, message: " this candidate has been removed" });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: error.message,
-    });
+    next(new HttpException(422, error.message));
+    // console.log(error);
+    // res.status(400).json({
+    //   message: error.message,
+    // });
   }
 };
 //exporting the functions

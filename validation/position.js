@@ -11,9 +11,8 @@ const checkpositionExists = async (req, res, next) => {
   });
 
   if (position) {
-    return res.status(422).json({
-      message: "Position already exists",
-    });
+    return     next(new HttpException(422, "Position already exists"));
+
   } else {
     next();
   }

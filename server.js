@@ -16,6 +16,13 @@ app.get("/", (req, res, next) => {
     message: "welcome to our  voting app",
   });
 });
+app.use((error, req, res, next) => {
+  console.log(error.message);
+  res.status(error.status).json({
+      status: error.status,
+      message: error.message
+  });
+});
 // server activation
 app.listen(PORT, () => {
   console.log(`server running on port${PORT}`);

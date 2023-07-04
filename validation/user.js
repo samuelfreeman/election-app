@@ -11,9 +11,8 @@ const checkUserExists = async (req, res, next) => {
   });
 
   if (user) {
-    return res.status(422).json({
-      message: "user already exists",
-    });
+    return     next(new HttpException(422, "User already exist"));
+
   } else {
     next();
   }
