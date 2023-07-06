@@ -10,7 +10,7 @@ const saveCandidate = async (req, res, next) => {
     const data = req.body;
     console.log(data);
     const photo = req.file ? req.file.path : undefined;
-
+    console.log(photo);
     if (photo) {
       const uploaded = await cloudinary.uploader.upload(photo, {
         folder: "election/candidates",
@@ -27,11 +27,9 @@ const saveCandidate = async (req, res, next) => {
       candidates,
     });
   } catch (error) {
-    next(new HttpException(201, error.message));
+    next(new HttpException(422, error.message));
     // console.log(error);
-    // res.status(422).json({
-    //   message: error.message,
-    // });
+
   }
 };
 //loading a single candidate
@@ -70,7 +68,7 @@ const updateCandidate = async (req, res, next) => {
       candidates,
     });
   } catch (error) {
-    next(new HttpException(400, error.message));
+    next(new HttpException(401, error.message));
     // console.log(error);
     // res.status(400).json({
     //   message: error.message,
