@@ -1,14 +1,32 @@
-//importing express
-const { Router } = require("express");
+//  importing express
+const { Router } = require('express');
+
 const votingRouter = Router();
-//importing controller
-const votes = require("../controllers/voting");
-const validation = require("../validation/voting");
-const candidate = require("../controllers/candidates");
-const verification = require("../verification/verifytoken");
+//  importing controllers,validators,verifiyer
+const votes = require('../controllers/voting');
+
+const candidate = require('../controllers/candidates');
+
+const validation = require('../validation/voting');
+
+const verification = require('../verification/verifytoken');
+
 // implementing https methods
-votingRouter.get("/candidates/:positionId",candidate.getCandidateByPositionId);//load all candidates
-votingRouter.post("/",validation.checkVoteExists, votes.addVoting);//save a vote
-votingRouter.get("/",votes.getVotes);//load all votes
-//exporting voting router
+
+votingRouter.get(
+  '/candidates/',
+  verification.verifyToken,
+  candidate.getAllCandidates,
+); // load all candidates
+votingRouter.post(
+  '/',
+  verification.verifyToken,
+  validation.checkVoteExists,
+  validation.doubleVoting,
+  votes.addVoting,
+); // save a vote
+votingRouter.post('/saves/', verification.verifyToken, votes.saveMassvotes);
+votingRouter.get('/', verification.verifyToken, votes.getVotes); // load all votes
+
+// exporting voting router
 module.exports = votingRouter;
