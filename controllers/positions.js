@@ -41,9 +41,9 @@ const getAllPosition = async (req, res, next) => {
 };
 //  loading position by its id
 const getPositionById = async (req, res, next) => {
-  const { id } = req.params.id;
+  const id = req.params.id;
   try {
-    const { position } = await prisma.positions.findUnique({
+    const position = await prisma.positions.findUnique({
       where: {
         id,
       },
@@ -56,9 +56,9 @@ const getPositionById = async (req, res, next) => {
 // editing a postion
 const updatePosition = async (req, res, next) => {
   try {
-    const { id } = req.params.id;
-    const { data } = req.body;
-    const { positions } = await prisma.positions.update({
+    const id = req.params.id;
+    const data = req.body;
+    const positions = await prisma.positions.update({
       where: {
         id,
       },
@@ -73,9 +73,9 @@ const updatePosition = async (req, res, next) => {
 };
 // deleting a position
 const deletePostion = async (req, res, next) => {
-  const { id } = req.params.id;
+  const id = req.params.id;
   try {
-    const { positions } = await prisma.positions.delete({
+    const positions = await prisma.positions.delete({
       where: {
         id,
       },

@@ -34,7 +34,7 @@ const saveCandidate = async (req, res, next) => {
 };
 // loading a single candidate
 const getSingleCandidateFunc = async (req, res, next) => {
-  const { id } = req.params.id;
+  const id = req.params.id;
   try {
     const candidate = await prisma.candidates.findUnique({
       where: {
@@ -52,7 +52,7 @@ const getSingleCandidateFunc = async (req, res, next) => {
 // updating a candidate
 const updateCandidate = async (req, res, next) => {
   try {
-    const { id } = req.params.id;
+    const id = req.params.id;
     const data = req.body;
     const candidates = await prisma.candidates.update({
       where: {
@@ -85,7 +85,7 @@ const getAllCandidates = async (req, res, next) => {
 // loading a candidate by its position id
 const getCandidateByPositionId = async (req, res, next) => {
   try {
-    const { positionId } = req.params.positionId;
+    const positionId = req.params.positionId;
 
     const candidate = await prisma.candidates.findFirst({
       where: {
@@ -103,7 +103,7 @@ const getCandidateByPositionId = async (req, res, next) => {
 
 // deleting a candidate
 const removeCandidateById = async (req, res, next) => {
-  const { id } = req.params.id;
+  const id = req.params.id;
   try {
     const candidate = await prisma.candidates.delete({
       where: {

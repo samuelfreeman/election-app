@@ -10,9 +10,9 @@ const prisma = new PrismaClient();
 //  login functinion for admins/users
 const login = async (req, res, next) => {
   try {
-    const { email } = req.body.email;
-    const { password } = req.body.password;
-    const { users } = await prisma.user.findFirst({
+    const email = req.body.email;
+    const password = req.body.password;
+    const users = await prisma.user.findFirst({
       where: {
         email,
         password,
@@ -37,7 +37,7 @@ const login = async (req, res, next) => {
 //  saving  a user
 const saveUser = async (req, res, next) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
     const user = await prisma.user.create({
       data,
     });
@@ -63,8 +63,8 @@ const getAllUsers = async (req, res, next) => {
 //  loading a single user
 const getSingleUser = async (req, res, next) => {
   try {
-    const { id } = req.params.id;
-    const { user } = await prisma.user.findFirst({
+    const id = req.params.id;
+    const user = await prisma.user.findFirst({
       where: {
         id,
       },
@@ -80,9 +80,9 @@ const getSingleUser = async (req, res, next) => {
 //  editing a user
 const updateUser = async (req, res, next) => {
   try {
-    const { id } = req.params.id;
-    const { data } = req.body;
-    const { user } = await prisma.user.update({
+    const id = req.params.id;
+    const data = req.body;
+    const user = await prisma.user.update({
       where: {
         id,
       },
@@ -99,8 +99,8 @@ const updateUser = async (req, res, next) => {
 //  deleting a user
 const deleteUser = async (req, res, next) => {
   try {
-    const { id } = req.params.id;
-    const { user } = await prisma.user.delete({
+    const id = req.params.id;
+    const user = await prisma.user.delete({
       where: {
         id,
       },

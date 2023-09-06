@@ -7,7 +7,7 @@ const HttpException = require('../validation/http-exception');
 // saving a voter
 const addVoting = async (req, res, next) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
 
     const votes = await prisma.voting.create({
       data,

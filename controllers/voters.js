@@ -11,9 +11,9 @@ const HttpException = require('../validation/http-exception');
 // function for voter login
 const login = async (req, res, next) => {
   try {
-    const { email } = req.body.email;
-    const { password } = req.body.password;
-    const { voters } = await prisma.voters.findFirst({
+    const email = req.body.email;
+    const password = req.body.password;
+    const voters = await prisma.voters.findFirst({
       where: {
         email,
         password,
@@ -38,7 +38,7 @@ const login = async (req, res, next) => {
 //  function for saving a voter
 const createVoter = async (req, res, next) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
     const voters = await prisma.voters.create({
       data,
     });
@@ -65,7 +65,7 @@ const getAllVoters = async (req, res, next) => {
 //  loading a voter by its id
 const getVotersById = async (req, res, next) => {
   try {
-    const { studentId } = req.params.studentId;
+    const studentId = req.params.studentId;
     const voter = await prisma.voters.findFirst({
       where: {
         studentId,
@@ -82,8 +82,8 @@ const updateVoter = async (req, res, next) => {
   try {
     console.log(req.params);
     console.log('===================');
-    const { studentId } = req.params.studentId;
-    const { data } = req.body;
+    const studentId = req.params.studentId;
+    const data = req.body;
     const voters = await prisma.voters.update({
       where: {
         studentId,
@@ -100,7 +100,7 @@ const updateVoter = async (req, res, next) => {
 };
 //  deleting a voter
 const deleteVoter = async (req, res, next) => {
-  const { studentId } = req.params.studentId;
+  const studentId = req.params.studentId;
   try {
     const deletedVoter = await prisma.voters.delete({
       where: {
