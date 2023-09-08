@@ -12,6 +12,8 @@ const candidate = require('../controllers/candidates');
 
 const user = require('../controllers/user');
 
+const userScheme = require('../schemes/userscheme');
+
 const validation = require('../validation/user');
 
 //  Routes
@@ -21,7 +23,7 @@ userRouter.get('/candidates/:positionId', candidate.getCandidateByPositionId);
 
 userRouter.post(
   '/',
-  verification.userToken,
+  [...userScheme],
   validation.checkUserExists,
   user.saveUser,
 );

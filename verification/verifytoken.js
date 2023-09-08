@@ -1,14 +1,15 @@
-var jwt = require("jsonwebtoken");
+var jwt = require('jsonwebtoken');
+
 const verifyToken = (req, res, next) => {
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization.startsWith('Bearer')
   ) {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     if (!token) {
       return res.status(401).json({
-        status: "fail",
-        message: "Access Denied",
+        status: 'fail',
+        message: 'Access Denied',
         token,
       });
     }
@@ -18,17 +19,16 @@ const verifyToken = (req, res, next) => {
       next();
     } catch (error) {
       res.status(403).json({
-        status: "fail",
-        message: "Invalid Token",
+        status: 'fail',
+        message: 'Invalid Token',
         token,
       });
     }
-  } else {
-    return res.status(500).json({
-      status: "fail",
-      message: "No Header Available",
-    });
   }
+  return res.status(500).json({
+    status: 'fail',
+    message: 'No Header Available',
+  });
 };
 module.exports = {
   verifyToken,

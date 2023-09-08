@@ -7,6 +7,8 @@ const votes = require('../controllers/voting');
 
 const candidate = require('../controllers/candidates');
 
+const votingscheme = require('../schemes/votingscheme');
+
 const validation = require('../validation/voting');
 
 const verification = require('../verification/verifytoken');
@@ -20,6 +22,7 @@ votingRouter.get(
 ); // load all candidates
 votingRouter.post(
   '/',
+  [...votingscheme],
   verification.verifyToken,
   validation.checkVoteExists,
   validation.doubleVoting,

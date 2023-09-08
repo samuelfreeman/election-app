@@ -2,6 +2,8 @@
 
 const { PrismaClient } = require('@prisma/client');
 
+const { validationResult } = require('express-validator');
+
 const prisma = new PrismaClient();
 
 const cloudinary = require('../utils/cloudinary');
@@ -10,6 +12,13 @@ const HttpException = require('../validation/http-exception');
 
 // saving a candidate
 const saveCandidate = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty) {
+    res.status(400).json({
+      errors: errors.array(),
+    });
+  }
+
   try {
     const data = req.body;
     const photo = req.file ? req.file.path : undefined;

@@ -10,10 +10,13 @@ const positions = require('../controllers/positions');
 
 // importing validator
 
+const positionscheme = require('../schemes/positionscheme');
+
 const validation = require('../validation/position');
 
 positionsRouter.post(
   '/',
+  [...positionscheme],
   validation.checkpositionExists,
   positions.createPosition,
 );

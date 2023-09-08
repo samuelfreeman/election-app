@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const HttpException = require("../validation/http-exception")
+const HttpException = require('./http-exception');
 
 const checkpositionExists = async (req, res, next) => {
   const positionName = req.body.positionName;
@@ -12,8 +12,7 @@ const checkpositionExists = async (req, res, next) => {
   });
 
   if (position) {
-    return     next(new HttpException(422, "Position already exists"));
-
+    next(new HttpException(422, 'Position already exists'));
   } else {
     next();
   }

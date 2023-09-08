@@ -1,7 +1,11 @@
-//importing the prisma dependency 
-const { PrismaClient } = require("@prisma/client");
+// importing the prisma dependency
+const { PrismaClient } = require('@prisma/client');
+
+const HttpException = require('./http-exception');
+
 const prisma = new PrismaClient();
-//authenticating voter email
+
+// authenticating voter email
 const checkEmailExists = async (req, res, next) => {
   const email = req.body.email;
   const voters = await prisma.voters.findFirst({
@@ -11,15 +15,16 @@ const checkEmailExists = async (req, res, next) => {
   });
 
   if (!voters) {
-    return res.status(422).json({
-      message: "Please sign up!",
+    res.status(422).json({
+      message: 'Please sign up!',
     });
   } else {
     next();
   }
 };
-//authenticating user email
-const userEmail = async(req,res,next)=>{
+
+// authenticating user email
+const userEmail = async (req, res, next) => {
   const email = req.body.email;
   const user = await prisma.user.findFirst({
     where: {
@@ -28,13 +33,12 @@ const userEmail = async(req,res,next)=>{
   });
 
   if (!user) {
-    return    next(new HttpException(422,"Please sign up!"));
-
+    next(new HttpException(422, 'Please sign up!'));
   } else {
     next();
   }
-}
+};
 module.exports = {
   checkEmailExists,
-  userEmail
+  userEmail,
 };

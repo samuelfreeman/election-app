@@ -4,6 +4,8 @@ const { PrismaClient } = require('@prisma/client');
 
 const { signToken } = require('../utils/token');
 
+const { validationResult } = require('express-validator');
+
 const prisma = new PrismaClient();
 
 const HttpException = require('../validation/http-exception');
@@ -37,6 +39,12 @@ const login = async (req, res, next) => {
 };
 //  function for saving a voter
 const createVoter = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty) {
+    res.status(400).json({
+      errors: errors.array(),
+    });
+  }
   try {
     const data = req.body;
     const voters = await prisma.voters.create({
@@ -101,6 +109,7 @@ const updateVoter = async (req, res, next) => {
 //  deleting a voter
 const deleteVoter = async (req, res, next) => {
   const studentId = req.params.studentId;
+
   try {
     const deletedVoter = await prisma.voters.delete({
       where: {

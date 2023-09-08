@@ -4,6 +4,8 @@ const { PrismaClient } = require('@prisma/client');
 
 const { signToken } = require('../utils/usertoken');
 
+const { validationResult } = require('express-validator');
+
 const HttpException = require('../validation/http-exception');
 
 const prisma = new PrismaClient();
@@ -36,6 +38,12 @@ const login = async (req, res, next) => {
 };
 //  saving  a user
 const saveUser = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      errors: errors.array(),
+    });
+  }
   try {
     const data = req.body;
     const user = await prisma.user.create({

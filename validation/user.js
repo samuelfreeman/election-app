@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const HttpException = require("../validation/http-exception")
+const HttpException = require('./http-exception');
 
 const checkUserExists = async (req, res, next) => {
   const email = req.body.email;
@@ -12,8 +12,7 @@ const checkUserExists = async (req, res, next) => {
   });
 
   if (user) {
-    return     next(new HttpException(422, "User already exist"));
-
+    next(new HttpException(422, 'User already exist'));
   } else {
     next();
   }

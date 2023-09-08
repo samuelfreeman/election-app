@@ -7,11 +7,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "generate": "npx prisma generate",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "lint": "eslint ./"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.1",
     "prisma": "^4.16.2"
   },
   "dependencies": {
@@ -20,7 +30,9 @@
     "cloudinary": "^1.37.3",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "eslint": "^7.32.0 || ^8.2.0",
     "express": "^4.18.2",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^1.14.9",

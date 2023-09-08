@@ -39,7 +39,7 @@ model candidates {
   telephone     String?
   profile       String?
   positions     positions? @relation(fields: [positionId], references: [id])
-  positionId    String?  @unique @db.ObjectId
+  positionId    String?    @unique @db.ObjectId
   del_flag      Boolean    @default(false)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -55,11 +55,11 @@ model voting {
   voters      voters?     @relation(fields: [voterId], references: [studentId])
   voterId     String?
 }
-model user{
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
-  fullName    String  
-  email       String      
-  password    String  
-  telephone   String
 
+model user {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  fullName  String
+  email     String
+  password  String
+  telephone String
 }
