@@ -15,7 +15,7 @@ const candidate = require('../controllers/candidates');
 
 // importing validator
 
-const candidateName = require('../schemes/candidatescheme');
+const candidateName = require('../utils/schemes/candidatescheme');
 
 const validation = require('../validation/candidate');
 

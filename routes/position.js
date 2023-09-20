@@ -10,7 +10,7 @@ const positions = require('../controllers/positions');
 
 // importing validator
 
-const positionscheme = require('../schemes/positionscheme');
+const positionscheme = require('../utils/schemes/positionscheme');
 
 const validation = require('../validation/position');
 

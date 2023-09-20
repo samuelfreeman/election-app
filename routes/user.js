@@ -12,7 +12,7 @@ const candidate = require('../controllers/candidates');
 
 const user = require('../controllers/user');
 
-const userScheme = require('../schemes/userscheme');
+const userScheme = require('../utils/schemes/userscheme');
 
 const validation = require('../validation/user');
 

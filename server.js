@@ -1,11 +1,15 @@
 // importing dependencies
 const express = require('express');
 
+const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
+
 const bodyparser = require('body-parser');
 
 const cors = require('cors');
 
 const app = express();
+
+app.use(express.static(pathToSwaggerUi));
 
 const PORT = process.env.PORT || 8080;
 

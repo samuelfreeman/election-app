@@ -8,7 +8,9 @@ const votersRouter = Router();
 const voters = require('../controllers/voters');
 
 // const candidate = require('../controllers/candidates');
-const voterscheme = require('express-validator');
+const { check } = require('express-validator');
+
+const voterScheme = require('../utils/schemes/votersScheme');
 
 const validation = require('../validation/voters');
 
@@ -19,7 +21,7 @@ const verification = require('../verification/verifytoken');
 //  Routes
 votersRouter.post(
   '/',
-  [...voterscheme],
+  [...voterScheme],
   validation.checkUserExists,
   voters.createVoter,
 );

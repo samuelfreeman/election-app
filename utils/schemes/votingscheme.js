@@ -6,4 +6,4 @@ const votingscheme = [
   check('voterId', 'voterId is required').notEmpty().isMongoId(),
 ];
 
-model.exports = votingscheme;
+module.exports = votingscheme;

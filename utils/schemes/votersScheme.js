@@ -1,9 +1,12 @@
 const { check } = require('express-validator');
 
 const voterscheme = [
-  check('studentName', 'student name is required').exists().notEmpty.isString(),
+  check('studentName', 'student name is required')
+    .isMongoId()
+    .exists()
+    .notEmpty.isString(),
   check('email', 'email is required').isEmail().notEmpty,
   check('password', 'password is required').notEmpty(),
 ];
 
-model.exports = voterscheme;
+module.exports = voterscheme;

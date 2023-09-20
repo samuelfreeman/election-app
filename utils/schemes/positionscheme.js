@@ -6,4 +6,4 @@ const positionscheme = [
   check('id', 'must be a mongoId').isMongoId(),
 ];
 
-model.exports = positionscheme;
+module.exports = positionscheme;
