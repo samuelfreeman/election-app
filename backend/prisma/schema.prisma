@@ -6,14 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model voters {
   studentId   String   @id @map("_id")
   studentName String?
-  email       String?
+  email       String?  @unique
   telephone   String?
   password    String?
   del_flg     Boolean  @default(false)
@@ -23,7 +23,7 @@ model voters {
 }
 
 model positions {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  id           String       @id @default(uuid()) @map("_id")
   positionName String       @unique
   description  String?
   del_flg      Boolean      @default(false)
@@ -34,12 +34,12 @@ model positions {
 }
 
 model candidates {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  id            String     @id @default(uuid()) @map("_id")
   candidateName String     @unique
   telephone     String?
   profile       String?
   positions     positions? @relation(fields: [positionId], references: [id])
-  positionId    String?    @unique @db.ObjectId
+  positionId    String?    @db.Uuid
   del_flag      Boolean    @default(false)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -47,19 +47,19 @@ model candidates {
 }
 
 model voting {
-  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  id          String      @id @default(uuid()) @map("_id")
   positions   positions?  @relation(fields: [positionId], references: [id])
-  positionId  String?     @db.ObjectId
+  positionId  String?     @db.Uuid
   candidates  candidates? @relation(fields: [candidateId], references: [id])
-  candidateId String?     @db.ObjectId
+  candidateId String?     @db.Uuid
   voters      voters?     @relation(fields: [voterId], references: [studentId])
   voterId     String?
 }
 
 model user {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String @id @default(uuid()) @map("_id")
   fullName  String
-  email     String
+  email     String @unique
   password  String
   telephone String
 }

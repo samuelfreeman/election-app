@@ -1,30 +1,20 @@
 // importing dependencies
 const express = require('express');
-
 const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
-
 const bodyparser = require('body-parser');
-
 const cors = require('cors');
-
 const app = express();
-
 app.use(express.static(pathToSwaggerUi));
-
 const PORT = process.env.PORT || 8080;
-
 require('dotenv/config');
-
 const appRoutes = require('./routes/index');
 
 // using middlewares
-
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyparser.json());
 app.use('/api', appRoutes);
 
 // endpoint test
-
 app.get(
   '/',
   (error, req, res) => {
@@ -40,8 +30,8 @@ app.get(
     });
   },
 );
-// server activation
 
+// server activation
 app.listen(PORT, () => {
   console.log(`server running on port${PORT}`);
 });
