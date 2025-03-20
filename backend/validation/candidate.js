@@ -1,8 +1,5 @@
 //  importing prisma
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
-
+const prisma = require('../db/prisma-db');
 const HttpException = require('./http-exception');
 
 //  validating candidate

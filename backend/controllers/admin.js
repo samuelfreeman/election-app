@@ -1,34 +1,34 @@
 //  importing all dependencies
-
-const { PrismaClient } = require('@prisma/client');
-
-const { signToken } = require('../utils/usertoken');
-
 const { validationResult } = require('express-validator');
-
 const HttpException = require('../validation/http-exception');
+const prisma = require('../db/prisma-db');
+const { signToken } = require('../utils/token');
 
-const prisma = new PrismaClient();
 //  login functinion for admins/users
 const login = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const users = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email,
         password,
       },
     });
-    console.log(users);
-    if (!users) {
+    if (!user) {
       res.status(422).json({
-        message: 'Invalid Password',
+        message: 'Invalid credentials',
       });
     } else {
-      const token = signToken(users.id);
+      const token = signToken(user.id, user.role || 'ADMIN');
       res.status(200).json({
         token,
+        user: {
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role || 'ADMIN',
+        },
       });
     }
   } catch (error) {
@@ -36,6 +36,7 @@ const login = async (req, res, next) => {
     next(new HttpException(422, error.message));
   }
 };
+
 //  saving  a user
 const saveUser = async (req, res, next) => {
   const errors = validationResult(req);
@@ -49,20 +50,64 @@ const saveUser = async (req, res, next) => {
     const user = await prisma.user.create({
       data,
     });
+    const userWithoutPassword = { ...user };
+    delete userWithoutPassword.password;
     res.status(201).json({
-      user,
+      message: 'User created successfully',
+      user: userWithoutPassword,
     });
   } catch (error) {
     console.log(error);
     next(new HttpException(422, error.message));
   }
 };
+
+// Get user from token
+const getMe = async (req, res, next) => {
+  try {
+    // Make sure user is attached to the request by the middleware
+    if (!req.user) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'User not authenticated',
+      });
+    }
+
+    // Get user ID from the token payload
+    const userId = req.user.id;
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const userWithoutPassword = { ...user };
+    delete userWithoutPassword.password;
+
+    res.status(200).json({
+      user: userWithoutPassword,
+    });
+  } catch (error) {
+    next(new HttpException(422, error.message));
+  }
+};
+
 //  loading all users
 const getAllUsers = async (req, res, next) => {
   try {
-    const user = await prisma.user.findMany({});
+    const users = await prisma.user.findMany({});
+
+    const usersWithoutPassword = users.map((user) => {
+      const userWithoutPassword = { ...user };
+      delete userWithoutPassword.password;
+      return userWithoutPassword;
+    });
+
     res.status(200).json({
-      user,
+      users: usersWithoutPassword,
     });
   } catch (error) {
     next(new HttpException(400, error.message));
@@ -77,9 +122,16 @@ const getSingleUser = async (req, res, next) => {
         id,
       },
     });
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found',
+      });
+    }
+    const userWithoutPassword = { ...user };
+    delete userWithoutPassword.password;
 
     res.status(200).json({
-      user,
+      user: userWithoutPassword,
     });
   } catch (error) {
     next(new HttpException(422, error.message));
@@ -108,26 +160,26 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const user = await prisma.user.delete({
+    await prisma.user.delete({
       where: {
         id,
       },
     });
 
     res.status(200).json({
-      user,
+      message: 'User deleted successfully',
     });
   } catch (error) {
     next(new HttpException(422, error.message));
   }
 };
 //  exporting a functions
-
 module.exports = {
   login,
   saveUser,
-  deleteUser,
   updateUser,
+  deleteUser,
   getSingleUser,
   getAllUsers,
+  getMe,
 };

@@ -1,12 +1,9 @@
 // importing all dependencies
-const { PrismaClient } = require('@prisma/client');
-
 const { validationResult } = require('express-validator');
-
-const prisma = new PrismaClient();
-
 const HttpException = require('../validation/http-exception');
-// saving a voter
+const prisma = require('../db/prisma-db');
+
+// saving a vote
 const addVoting = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty) {
@@ -16,17 +13,19 @@ const addVoting = async (req, res, next) => {
   }
   try {
     const data = req.body;
-
-    const votes = await prisma.voting.create({
+    const vote = await prisma.voting.create({
       data,
     });
     res.status(201).json({
-      votes,
+      message: 'Vote saved successfully',
+      vote,
     });
   } catch (error) {
     next(new HttpException(422, error.message));
   }
 };
+
+// saving multiple votes
 const saveMassvotes = async (req, res, next) => {
   try {
     const data = req.body;
@@ -41,7 +40,8 @@ const saveMassvotes = async (req, res, next) => {
     next(new HttpException(422, error.message));
   }
 };
-// loading all votes
+
+// loading my votes
 const getVotes = async (req, res, next) => {
   try {
     const votes = await prisma.voting.groupBy({

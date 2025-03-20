@@ -1,45 +1,40 @@
 // importing express
 const { Router } = require('express');
-
 const votersRouter = Router();
-
-//  importing controllers,validators,verifications
-
 const voters = require('../controllers/voters');
-
-// const candidate = require('../controllers/candidates');
-const { check } = require('express-validator');
-
-const voterScheme = require('../utils/schemes/votersScheme');
-
+const voterScheme = require('../schemes/votersScheme');
 const validation = require('../validation/voters');
-
 const authentication = require('../validation/auth');
-
 const verification = require('../verification/verifytoken');
+const { authenticateAdmin } = require('../verification/verifyusers');
 
 //  Routes
 votersRouter.post(
-  '/',
+  '/register',
   [...voterScheme],
   validation.checkUserExists,
   voters.createVoter,
 );
 
-votersRouter.get('/login/', authentication.checkEmailExists, voters.login);
+votersRouter.post('/login', authentication.checkEmailExists, voters.login);
 
-votersRouter.get('/', verification.verifyToken, voters.getAllVoters);
+// Admin route
+votersRouter.get('/', authenticateAdmin, voters.getAllVoters);
 
-votersRouter.get('/:studentId', verification.verifyToken, voters.getVotersById);
+// Get me
+votersRouter.get('/profile', verification.verifyToken, voters.getMe);
+votersRouter.get('/:studentId', verification.verifyToken, voters.getVoterById);
 
+votersRouter.patch(
+  '/update/:studentId',
+  verification.verifyToken,
+  voters.updateVoter,
+);
 votersRouter.delete(
   '/:studentId',
   verification.verifyToken,
   voters.deleteVoter,
 );
 
-votersRouter.patch('/:studentId', verification.verifyToken, voters.updateVoter);
-
 //  exporting all routes
-
 module.exports = votersRouter;

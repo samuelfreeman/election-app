@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 const cloudinary = require('../utils/cloudinary');
 const HttpException = require('../validation/http-exception');
 const prisma = require('../db/prisma-db');
+
 // saving a candidate
 const saveCandidate = async (req, res, next) => {
   const errors = validationResult(req);
@@ -23,17 +24,18 @@ const saveCandidate = async (req, res, next) => {
         data.profile = uploaded.secure_url;
       }
     }
-    const candidates = await prisma.candidates.create({
+    const candidate = await prisma.candidates.create({
       data,
     });
     res.status(201).json({
-      candidates,
+      message: 'Candidate created successfully',
+      candidate,
     });
   } catch (error) {
     next(new HttpException(422, error.message));
-    // console.log(error);
   }
 };
+
 // loading a single candidate
 const getSingleCandidateFunc = async (req, res, next) => {
   const id = req.params.id;
@@ -51,19 +53,20 @@ const getSingleCandidateFunc = async (req, res, next) => {
     next(new HttpException(400, error.message));
   }
 };
+
 // updating a candidate
 const updateCandidate = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
-    const candidates = await prisma.candidates.update({
+    const candidate = await prisma.candidates.update({
       where: {
         id,
       },
       data,
     });
     res.status(201).json({
-      candidates,
+      candidate,
     });
   } catch (error) {
     next(new HttpException(401, error.message));
@@ -73,10 +76,15 @@ const updateCandidate = async (req, res, next) => {
 const getAllCandidates = async (req, res, next) => {
   try {
     const { skip, take } = req.query;
+
     const candidates = await prisma.candidates.findMany({
-      skip: parseInt(skip),
-      take: parseInt(take),
+      skip: skip ? parseInt(skip) : undefined,
+      take: take ? parseInt(take) : undefined,
+      include: {
+        positions: true,
+      },
     });
+
     res.status(200).json({
       candidates,
     });
@@ -88,7 +96,6 @@ const getAllCandidates = async (req, res, next) => {
 const getCandidateByPositionId = async (req, res, next) => {
   try {
     const positionId = req.params.positionId;
-
     const candidate = await prisma.candidates.findFirst({
       where: {
         positionId,
@@ -112,9 +119,7 @@ const removeCandidateById = async (req, res, next) => {
         id,
       },
     });
-    res
-      .status(204)
-      .json({ candidate, message: ' this candidate has been removed' });
+    res.status(204).json({ message: 'Candidate deleted successfully!' });
   } catch (error) {
     next(new HttpException(422, error.message));
   }

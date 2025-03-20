@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const prisma = require('../db/prisma-db');
 const HttpException = require('./http-exception');
 
 const checkUserExists = async (req, res, next) => {

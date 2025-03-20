@@ -1,42 +1,48 @@
 // importing routes and dependencies
-
-const { PrismaClient } = require('@prisma/client');
-
-const { signToken } = require('../utils/token');
-
+const { signVoterToken } = require('../utils/token');
 const { validationResult } = require('express-validator');
-
-const prisma = new PrismaClient();
-
 const HttpException = require('../validation/http-exception');
+const prisma = require('../db/prisma-db');
 
 // function for voter login
 const login = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const voters = await prisma.voters.findFirst({
+
+    const voter = await prisma.voters.findFirst({
       where: {
         email,
         password,
+        del_flg: false,
       },
     });
-    console.log(voters);
-    if (!voters) {
-      res.status(422).json({
-        message: 'Invalid Password',
-      });
-    } else {
-      const token = signToken(voters.studentId);
-      res.status(200).json({
-        token,
+
+    if (!voter) {
+      return res.status(422).json({
+        status: 'fail',
+        message: 'Invalid credentials',
       });
     }
+
+    const token = signVoterToken(voter.studentId);
+
+    res.status(200).json({
+      status: 'success',
+      token,
+      user: {
+        studentId: voter.studentId,
+        studentName: voter.studentName,
+        email: voter.email,
+        role: voter.role || 'USER',
+      },
+    });
   } catch (error) {
     console.log(error);
     next(new HttpException(422, error.message));
   }
 };
+
 //  function for saving a voter
 const createVoter = async (req, res, next) => {
   const errors = validationResult(req);
@@ -47,31 +53,64 @@ const createVoter = async (req, res, next) => {
   }
   try {
     const data = req.body;
-    const voters = await prisma.voters.create({
+    const voter = await prisma.voters.create({
       data,
     });
+
+    const voterWithoutPassword = { ...voter };
+    delete voterWithoutPassword.password;
+
     res.status(201).json({
-      voters,
+      message: 'Voter created successfully',
+      voter: voterWithoutPassword,
     });
   } catch (error) {
     console.log(error);
     next(new HttpException(422, error.message));
   }
 };
+
 //  loading all voters
 const getAllVoters = async (req, res, next) => {
   try {
     const voters = await prisma.voters.findMany({});
+
+    const votersWithoutPassword = voters.map((voter) => {
+      delete voter.password;
+      return voter;
+    });
+
     res.status(200).json({
-      voters,
+      voters: votersWithoutPassword,
     });
   } catch (error) {
     console.log(error);
     next(new HttpException(422, error.message));
   }
 };
+
+// Get me
+const getMe = async (req, res, next) => {
+  try {
+    const studentId = req.user.studentId;
+    const voter = await prisma.voters.findFirst({
+      where: {
+        studentId,
+      },
+    });
+    const voterWithoutPassword = { ...voter };
+    delete voterWithoutPassword.password;
+    res.status(200).json({
+      voter: voterWithoutPassword,
+    });
+  } catch (error) {
+    console.log(error);
+    next(new HttpException(422, error.message));
+  }
+};
+
 //  loading a voter by its id
-const getVotersById = async (req, res, next) => {
+const getVoterById = async (req, res, next) => {
   try {
     const studentId = req.params.studentId;
     const voter = await prisma.voters.findFirst({
@@ -79,17 +118,20 @@ const getVotersById = async (req, res, next) => {
         studentId,
       },
     });
-    res.status(200).json(voter);
+    const voterWithoutPassword = { ...voter };
+    delete voterWithoutPassword.password;
+    res.status(200).json({
+      voter: voterWithoutPassword,
+    });
   } catch (error) {
     console.log(error);
     next(new HttpException(422, error.message));
   }
 };
+
 //  editing a voter
 const updateVoter = async (req, res, next) => {
   try {
-    console.log(req.params);
-    console.log('===================');
     const studentId = req.params.studentId;
     const data = req.body;
     const voters = await prisma.voters.update({
@@ -106,6 +148,7 @@ const updateVoter = async (req, res, next) => {
     next(new HttpException(422, error.message));
   }
 };
+
 //  deleting a voter
 const deleteVoter = async (req, res, next) => {
   const studentId = req.params.studentId;
@@ -116,24 +159,28 @@ const deleteVoter = async (req, res, next) => {
         studentId,
       },
     });
-    if (deletedVoter) {
-      res.status(201).json({
-        message: 'Voter deleted successfully',
+
+    if (!deletedVoter) {
+      return res.status(404).json({
+        message: 'Voter not found',
       });
-    } else {
-      next(new HttpException(404, 'Voter not found'));
     }
+    res.status(201).json({
+      message: 'Voter deleted successfully',
+    });
   } catch (error) {
     console.log(error);
     next(new HttpException(500, 'an error occurred'));
   }
 };
+
 //  exporting all functions
 module.exports = {
   getAllVoters,
-  getVotersById,
+  getVoterById,
   createVoter,
   updateVoter,
   deleteVoter,
   login,
+  getMe,
 };

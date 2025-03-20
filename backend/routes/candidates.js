@@ -1,17 +1,18 @@
 // importing express
 const { Router } = require('express');
 const candidateRouter = Router();
-// inmporting multer
 const multer = require('multer');
-// import express validator
 const { check } = require('express-validator');
-// importing controller
 const candidate = require('../controllers/candidates');
-// importing validator
-const candidateName = require('../utils/schemes/candidatescheme');
+const candidateName = require('../schemes/candidatescheme');
+const verification = require('../verification/verifyusers');
 const validation = require('../validation/candidate');
 const upload = multer({ dest: 'uploads/' });
-//  check if candidate exist then save or reject
+
+// All candidate routes require admin authentication
+candidateRouter.use(verification.authenticateAdmin);
+
+// check if candidate exist then save or reject
 candidateRouter.post(
   '/',
   [check('id', 'candidate already exists').isMongoId()],
@@ -20,12 +21,17 @@ candidateRouter.post(
   validation.checkCandidate,
   candidate.saveCandidate,
 );
-//  all crud routes
-candidateRouter.get('/:id', candidate.getSingleCandidateFunc);
-candidateRouter.get('/', candidate.getAllCandidates);
-candidateRouter.get('/:positionId', candidate.getCandidateByPositionId);
-candidateRouter.delete('/:id', candidate.removeCandidateById);
-candidateRouter.patch('/:id', candidate.updateCandidate);
-//  exporting all routes
 
+//  all crud routes
+candidateRouter.get('/', candidate.getAllCandidates);
+// get candidate by id
+candidateRouter.get('/:id', candidate.getSingleCandidateFunc);
+// get candidate by position id
+candidateRouter.get('/:positionId', candidate.getCandidateByPositionId);
+// update candidate
+candidateRouter.patch('/update/:id', candidate.updateCandidate);
+// delete candidate
+candidateRouter.delete('/:id', candidate.removeCandidateById);
+
+//  exporting all routes
 module.exports = candidateRouter;

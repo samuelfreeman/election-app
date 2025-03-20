@@ -11,11 +11,12 @@ datasource db {
 }
 
 model voters {
-  studentId   String   @id @map("_id")
+  studentId   String   @id 
   studentName String?
   email       String?  @unique
   telephone   String?
   password    String?
+  role        String   @default("USER")
   del_flg     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -23,7 +24,7 @@ model voters {
 }
 
 model positions {
-  id           String       @id @default(uuid()) @map("_id")
+  id           String       @id @default(uuid())  
   positionName String       @unique
   description  String?
   del_flg      Boolean      @default(false)
@@ -34,12 +35,12 @@ model positions {
 }
 
 model candidates {
-  id            String     @id @default(uuid()) @map("_id")
+  id            String     @id @default(uuid()) 
   candidateName String     @unique
   telephone     String?
   profile       String?
   positions     positions? @relation(fields: [positionId], references: [id])
-  positionId    String?    @db.Uuid
+  positionId    String? @default(uuid())  // Ensure it matches positions.id
   del_flag      Boolean    @default(false)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -47,19 +48,21 @@ model candidates {
 }
 
 model voting {
-  id          String      @id @default(uuid()) @map("_id")
+  id          String      @id @default(uuid())
   positions   positions?  @relation(fields: [positionId], references: [id])
-  positionId  String?     @db.Uuid
+  positionId  String? @default(uuid())  // Ensure it matches positions.id
   candidates  candidates? @relation(fields: [candidateId], references: [id])
-  candidateId String?     @db.Uuid
+  candidateId String? @default(uuid())  // Ensure it matches candidates.id
   voters      voters?     @relation(fields: [voterId], references: [studentId])
-  voterId     String?
+  voterId     String? @default(uuid())  // Ensure it matches voters.studentId
 }
 
 model user {
-  id        String @id @default(uuid()) @map("_id")
+  id        String @id @default(uuid()) 
   fullName  String
   email     String @unique
   password  String
   telephone String
+  role      String @default("ADMIN")
 }
+
