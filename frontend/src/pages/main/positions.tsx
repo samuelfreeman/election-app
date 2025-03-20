@@ -1,8 +1,11 @@
+import UnderDevelopment from "@/components/under-development";
+
 export default function Positions() {
   return (
-    <div className="container py-12 md:py-24">
-      <h1 className="text-3xl font-bold mb-6">Positions</h1>
-      <p>Positions page content will go here.</p>
-    </div>
+    <UnderDevelopment
+      title="Positions Page In Development"
+      description="We're creating a detailed overview of all available positions in the upcoming elections, including responsibilities and requirements."
+      estimatedCompletion="March 2025"
+    />
   );
 }

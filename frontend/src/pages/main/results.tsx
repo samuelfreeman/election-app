@@ -1,8 +1,11 @@
+import UnderDevelopment from "@/components/under-development";
+
 export default function Results() {
   return (
-    <div className="container py-12 md:py-24">
-      <h1 className="text-3xl font-bold mb-6">Results</h1>
-      <p>Results page content will go here.</p>
-    </div>
+    <UnderDevelopment
+      title="Results Page Coming Soon"
+      description="Election results will be displayed here once voting has concluded. The page is currently under development and will be available after the first election."
+      estimatedCompletion="May 2025"
+    />
   );
 }

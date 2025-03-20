@@ -1,8 +1,11 @@
+import UnderDevelopment from "@/components/under-development";
+
 export default function Candidates() {
   return (
-    <div className="container py-12 md:py-24">
-      <h1 className="text-3xl font-bold mb-6">Candidates</h1>
-      <p>Candidates page content will go here.</p>
-    </div>
+    <UnderDevelopment
+      title="Candidates Page Under Construction"
+      description="We're building a comprehensive platform to showcase all candidates for the upcoming elections. Check back soon to learn about who's running."
+      estimatedCompletion="March 2025"
+    />
   );
 }
