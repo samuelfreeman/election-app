@@ -6,7 +6,7 @@ const voterScheme = require('../schemes/votersScheme');
 const validation = require('../validation/voters');
 const authentication = require('../validation/auth');
 const verification = require('../verification/verifytoken');
-const { authenticateAdmin } = require('../verification/verifyusers');
+const { authenticateAdmin, userToken } = require('../verification/verifyusers');
 
 //  Routes
 votersRouter.post(
@@ -22,7 +22,7 @@ votersRouter.post('/login', authentication.checkEmailExists, voters.login);
 votersRouter.get('/', authenticateAdmin, voters.getAllVoters);
 
 // Get me
-votersRouter.get('/profile', verification.verifyToken, voters.getMe);
+votersRouter.get('/profile', userToken, voters.getMe);
 votersRouter.get('/:studentId', verification.verifyToken, voters.getVoterById);
 
 votersRouter.patch(

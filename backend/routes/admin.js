@@ -7,7 +7,7 @@ const verification = require('../verification/verifyusers');
 const admin = require('../controllers/admin');
 const userScheme = require('../schemes/userscheme');
 const validation = require('../validation/user');
-
+const votes = require('../controllers/voting');
 //  Routes
 userRouter.post(
   '/register',
@@ -20,6 +20,7 @@ userRouter.post('/login', authentication.userEmail, admin.login);
 userRouter.get('/me', verification.userToken, admin.getMe);
 
 // Admin-only routes
+userRouter.get('/votes', verification.authenticateAdmin, votes.getVotes);
 userRouter.get('/', verification.authenticateAdmin, admin.getAllUsers);
 userRouter.get('/:id', verification.authenticateAdmin, admin.getSingleUser);
 userRouter.patch(

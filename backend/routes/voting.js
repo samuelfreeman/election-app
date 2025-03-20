@@ -1,19 +1,18 @@
 //  importing express
 const { Router } = require('express');
 const votingRouter = Router();
-//  importing controllers,validators,verifiyer
 const votes = require('../controllers/voting');
 const candidate = require('../controllers/candidates');
 const votingscheme = require('../schemes/votingscheme');
 const validation = require('../validation/voting');
+const verification = require('../verification/verifytoken');
 const authenticateUser = require('../verification/verifyusers');
 
 // load all candidates
 votingRouter.get('/candidates', candidate.getAllCandidates);
 
-// load my votes
-votingRouter.get('/my-votes', authenticateUser.userToken, votes.getVotes);
-
+// get my votes
+votingRouter.get('/my-votes', authenticateUser.userToken, votes.getMyVotes);
 // save multiple votes
 votingRouter.post('/bulk-vote', verification.verifyToken, votes.saveMassvotes);
 
@@ -21,7 +20,7 @@ votingRouter.post('/bulk-vote', verification.verifyToken, votes.saveMassvotes);
 votingRouter.post(
   '/vote',
   [...votingscheme],
-  verification.verifyToken,
+  authenticateUser.userToken,
   validation.checkVoteExists,
   validation.doubleVoting,
   votes.addVoting,

@@ -92,15 +92,34 @@ const getAllVoters = async (req, res, next) => {
 // Get me
 const getMe = async (req, res, next) => {
   try {
-    const studentId = req.user.studentId;
-    const voter = await prisma.voters.findFirst({
+    // Get the current user's ID from the request object
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'User not authenticated',
+      });
+    }
+
+    const studentId = req.user.id; // Use id instead of studentId
+
+    const voter = await prisma.voters.findUnique({
       where: {
         studentId,
       },
     });
+
+    if (!voter) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'Voter not found',
+      });
+    }
+
     const voterWithoutPassword = { ...voter };
     delete voterWithoutPassword.password;
+
     res.status(200).json({
+      status: 'success',
       voter: voterWithoutPassword,
     });
   } catch (error) {
