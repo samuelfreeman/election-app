@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model voters {
+  studentId   String   @id 
+  studentName String?
+  email       String?  @unique
+  telephone   String?
+  password    String?
+  role        String   @default("USER")
+  del_flg     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  voting      voting[]
+}
+
+model positions {
+  id           String       @id @default(uuid())  
+  positionName String       @unique
+  description  String?
+  del_flg      Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  candidates   candidates[]
+  voting       voting[]
+}
+
+model candidates {
+  id            String     @id @default(uuid()) 
+  candidateName String     @unique
+  telephone     String?
+  profile       String?
+  positions     positions? @relation(fields: [positionId], references: [id])
+  positionId    String? @default(uuid())  // Ensure it matches positions.id
+  del_flag      Boolean    @default(false)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  voting        voting[]
+}
+
+model voting {
+  id          String      @id @default(uuid())
+  positions   positions?  @relation(fields: [positionId], references: [id])
+  positionId  String? @default(uuid())  // Ensure it matches positions.id
+  candidates  candidates? @relation(fields: [candidateId], references: [id])
+  candidateId String? @default(uuid())  // Ensure it matches candidates.id
+  voters      voters?     @relation(fields: [voterId], references: [studentId])
+  voterId     String? @default(uuid())  // Ensure it matches voters.studentId
+}
+
+model user {
+  id        String @id @default(uuid()) 
+  fullName  String
+  email     String @unique
+  password  String
+  telephone String
+  role      String @default("ADMIN")
+}
+
